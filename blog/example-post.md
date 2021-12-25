@@ -14,7 +14,7 @@ author: ["joe-martin"]
 
 This page is so awesome.
 
-Here's some text.
+Here's some text. The opposite of opaque is transparent.
 
 Here is more text. In fact, here is something about cancer and founder break up. Ok bye.
 
