@@ -10,34 +10,24 @@ from pathlib import Path
 # Set path to the folder containing the blog posts
 path = 'blog'
 
-# Read through a list of post URLs and their keywords
-keywordAssociations = {
-}
 
-# Grab a blog post and get the keywords from the YAML in the markdown file
 keywords = ''
 blogText = ''
+keywordAssociations = {}
 
+# Grab each md post in the blog folder and get the keywords from the YAML in the markdown file
+
+linkId = 1
 for file in glob.glob(os.path.join(path, '*.md')):
-    with open(os.path.join(os.getcwd(), file), 'r') as f: # open in readonly mode
-# Todo, get the end of the filepath only
+    with open(os.path.join(os.getcwd(), file), 'r') as f:
         fileName = Path(os.path.splitext(f.name)[0]).stem
         frontMatter, blogText = list(yaml.load_all(f, Loader=yaml.FullLoader))[:2]
         keywords = frontMatter["keywords"].split(",")
         for keyword in keywords:
-            keywordAssociations[fileName] = [keyword]
-
+            keywordAssociations.update({linkId : {}})
+            linkDetails = {fileName : keyword}
+            keywordAssociations[linkId].update(linkDetails)
+            linkId += 1
+            print(keywordAssociations)
 with open("keywordAssociations.json", "w") as outfile:
     json.dump(keywordAssociations, outfile)
-
-# Todo, move the below to a new script
-
-# Todo, reopen every article then do the link insertion
-
-# Insert link whenever a keyword is found
-for key, value in keywordAssociations.items():
-    for i in value:
-        newText = "["+i+"]("+key+")"
-        blogText = blogText.replace(i,newText)
-
-# Todo, the output of the above should be to actually replace the keywords in the articles with links.
