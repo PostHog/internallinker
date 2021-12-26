@@ -25,8 +25,7 @@ This isn't alpha yet - it's plain broken.
 This doesn't work yet:
 
 * keywordAssociations has wrong structure - it needs to work at a "link" level
-* random example crap in keywordAssociations needs to be deleted
-* this needs to create a useful output of the suggested links to be inserted. Ideally it'd literally edit the files directly. You could then use a pull request to check out the diff to remove links that don't make sense.
+* this needs to create a useful output of the suggested links to be inserted from the json it creates. Ideally it'd literally edit the files directly. You could then use a pull request to check out the diff to remove links that don't make sense.
 
 
 ## Pre-requisites
