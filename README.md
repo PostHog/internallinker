@@ -29,6 +29,7 @@ You should link internal pages of your website up for a better user experience a
 This doesn't work yet:
 
 * this needs to create a useful output of the suggested links to be inserted from the json it creates. Ideally it'd literally edit the files directly. You could then use a pull request to check out the diff to remove links that don't make sense. 
+  * this is midway implemented in `generate-links.py`
 * perhaps add a frontend?
 
 ## Pre-requisites
