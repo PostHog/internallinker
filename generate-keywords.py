@@ -10,7 +10,6 @@ from pathlib import Path
 # Set path to the folder containing the blog posts
 path = 'blog'
 
-
 keywords = ''
 blogText = ''
 keywordAssociations = {}

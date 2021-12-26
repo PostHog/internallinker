@@ -1,11 +1,25 @@
+import yaml
+import json
+import os
+import glob
+
+# CONFIGURATION
+# Set path to the folder containing the blog posts
+#todo: make this re-use the config from generate-keywords.py
+path = 'blog'
 
 
-# Todo, reopen every article then do the link insertion
+jsonFile = open('keywordAssociations.json')
+keywordAssociations = json.load(jsonFile)
+print(keywordAssociations)
 
-# Insert link whenever a keyword is found
-#for key, value in keywordAssociations.items():
-#    for i in value:
-#        newText = "["+i+"]("+key+")"
-#        blogText = blogText.replace(i,newText)
+for file in glob.glob(os.path.join(path, '*.md')):
+    with open(os.path.join(os.getcwd(), file), 'r') as f:
+        frontMatter, blogText = list(yaml.load_all(f, Loader=yaml.FullLoader))[:2]
 
-# Todo, the output of the above should be to actually replace the keywords in the articles with links.
+        for key, value in keywordAssociations.items():
+            print(keywordAssociations)
+#todo: fix this loop
+            for i in value:
+                newText = "["+i+"]("+key+")"
+                blogText = blogText.replace(i,newText)
