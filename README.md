@@ -40,3 +40,7 @@ source venv/bin/activate
 pip install pyyaml
 ```
 
+## To use
+
+- run `python generate-keywords.py`
+- run `python generate-links.py`
