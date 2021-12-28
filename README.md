@@ -25,12 +25,6 @@ You should link internal pages of your website up for a better user experience a
 * It then loops through all the blog post text for every post, and when a keyword is used, it suggests an internal link is made
 * the user can then grab the updated posts in the `generated-posts` folder
 
-# Todo
-
-* handle duplicated keywords
-  * pick randomly between them *and* show user if this is the case
-* make more obvious to user which files have been edited
-
 ## Pre-requisites
 
 First, make sure you have some markdown blog posts with keywords in their front matter (see `/example-posts` for the right format). Keywords should be split by commas (without spaces)
@@ -62,3 +56,4 @@ Fourth, now visit `http://127.0.0.1:5000/` in your browser
 - it puts these into a big json (`generated-posts/keywordAssociations.json`)
 - in `app.py`, the function `generate-links.py` then runs through every post, finds keyword matches and inserts a link
 - the user can then get these updated posts in the folder `/generated-posts`
+- we also show the user if any keywords are duplicated
