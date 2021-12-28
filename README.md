@@ -48,6 +48,7 @@ pip3 install -r requirements.txt
 virtualenv --python=python3 venv
 source venv/bin/activate
 ```
+
 ## To use
 
 - in both `generate-keywords.py` and `generate-links.py`, set `path` as the local path to the folder that contains the posts you want to modify
