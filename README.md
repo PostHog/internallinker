@@ -27,12 +27,9 @@ You should link internal pages of your website up for a better user experience a
 
 # Todo
 
-* it feels messy running two scripts - combine them
-* add a frontend
-  * choose folder
-  * produce table of files (with links) that it has loaded, and highlight which it has modified
 * handle duplicated keywords
   * pick randomly between them *and* show user if this is the case
+* make more obvious to user which files have been edited
 
 ## Pre-requisites
 
