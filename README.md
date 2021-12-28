@@ -12,7 +12,7 @@ Automatically generate internal links between your markdown files.
 
 # Notice
 
-This isn't alpha yet - it's plain broken.
+This is in Alpha. It's not tested yet properly.
 
 # Philosophy
 
@@ -26,11 +26,12 @@ You should link internal pages of your website up for a better user experience a
 
 # Todo
 
-This doesn't work yet:
-
-* this needs to create a useful output of the suggested links to be inserted from the json it creates. Ideally it'd literally edit the files directly. You could then use a pull request to check out the diff to remove links that don't make sense. 
-  * this is midway implemented in `generate-links.py`
-* perhaps add a frontend?
+* it feels messy running two scripts - combine them
+* add a frontend
+  * choose folder
+  * produce table of files (with links) that it has loaded, and highlight which it has modified
+* handle duplicated keywords
+  * pick randomly between them *and* show user if this is the case
 
 ## Pre-requisites
 
@@ -52,6 +53,7 @@ pip install pyyaml
 ```
 ## To use
 
+- in both `generate-keywords.py` and `generate-links.py`, set `path` as the local path to the folder that contains the posts you want to modify
 - run `python generate-keywords.py`
 - run `python generate-links.py`
 
