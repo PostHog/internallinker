@@ -18,8 +18,9 @@ for file in glob.glob(os.path.join(path, '*.md')):
         frontMatter, blogText = list(yaml.load_all(f, Loader=yaml.FullLoader))[:2]
 
         for key, value in keywordAssociations.items():
-            print(keywordAssociations)
-#todo: fix this loop
-            for i in value:
-                newText = "["+i+"]("+key+")"
-                blogText = blogText.replace(i,newText)
+            for url, linkedKeyword in value.items():
+                print(url)
+                print(linkedKeyword)
+                newText = "["+linkedKeyword+"]("+url+")"
+                blogText = blogText.replace(linkedKeyword,newText)
+                print(blogText)
