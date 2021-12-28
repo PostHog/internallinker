@@ -41,15 +41,12 @@ First, make sure you have some markdown blog posts in the /blog folder.
 These must have YAML front matter, that contains keywords
 Keywords should be split by commas (without spaces)
 
-Now you need to install one library:
-
-Install pyyaml:
+Second, install any needed dependencies.
 
 ```
-pip3 install virtualenv
+pip3 install -r requirements.txt
 virtualenv --python=python3 venv
 source venv/bin/activate
-pip install pyyaml
 ```
 ## To use
 
