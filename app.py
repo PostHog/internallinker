@@ -4,6 +4,7 @@ import sys
 import re
 import glob
 import json
+import collections
 from pathlib import Path
 from flask import Flask, flash, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -35,8 +36,8 @@ def upload_file():
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        generate_keywords()
-        return redirect(url_for('upload_file', name=filename))
+        linkOutput,duplicateKeywords  = generate_keywords()
+        return render_template('index.html', linkOutput=linkOutput, duplicateKeywords=duplicateKeywords)
 
 def generate_keywords():
     keywords = ''
@@ -55,13 +56,23 @@ def generate_keywords():
                 linkDetails = {fileName : keyword}
                 keywordAssociations[linkId].update(linkDetails)
                 linkId += 1
-                print(keywordAssociations)
     with open(app.config['UPLOAD_FOLDER'] + "/keywordAssociations.json", "w") as outfile:
         json.dump(keywordAssociations, outfile)
-    generate_links()
-    return
+    return duplicate_check()
 
-def generate_links():
+def duplicate_check():
+    # todo: check if any links in 
+    jsonFile = open(app.config['UPLOAD_FOLDER'] + '/keywordAssociations.json')
+    keywordAssociations = json.load(jsonFile)
+    keywordList = []
+    for key, value in keywordAssociations.items():
+                for url, linkedKeyword in value.items():
+                    keywordList.append(linkedKeyword)  
+    duplicateKeywords = [item for item, count in collections.Counter(keywordList).items() if count > 1]
+  
+    return generate_links(duplicateKeywords)
+
+def generate_links(duplicateKeywords):
     jsonFile = open(app.config['UPLOAD_FOLDER'] + '/keywordAssociations.json')
     keywordAssociations = json.load(jsonFile)
 
@@ -77,4 +88,4 @@ def generate_links():
             f.truncate(0)
             f.seek(0) #avoids weird characters at the start
             f.write(markdownContent)
-    return
+    return(keywordAssociations, duplicateKeywords)
