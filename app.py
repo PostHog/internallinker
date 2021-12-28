@@ -49,7 +49,7 @@ def generate_keywords():
         with open(os.path.join(os.getcwd(), file), 'r') as f:
             fileName = Path(os.path.splitext(f.name)[0]).stem
             frontMatter, blogText = list(yaml.load_all(f, Loader=yaml.FullLoader))[:2]
-            keywords = frontMatter["keywords"].split(",")
+            keywords = frontMatter["keywords"]
             for keyword in keywords:
                 keywordAssociations.update({linkId : {}})
                 linkDetails = {fileName : keyword}
