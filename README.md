@@ -20,9 +20,10 @@ You should link internal pages of your website up for a better user experience a
 
 # What it does
 
-* This will go through a folder of markdown posts in a folder.
+* The user uploads one or more markdown posts (which must have keywords entered in the frontmatter) - see `example-posts` for the right format. Note: you must _only_ have a comma between keywords - no spaces!
 * It'll create a list of all the keywords that each post relates to (based on their frontmatter).
 * It then loops through all the blog post text for every post, and when a keyword is used, it suggests an internal link is made
+* the user can then grab the updated posts in the `generated-posts` folder
 
 # Todo
 
@@ -57,7 +58,10 @@ source venv/bin/activate
 
 ## How it works
 
-- `generate-keywords.py` runs through every post in the blog folder
+- this is an app powered by Flask
+- the user uploads one or more markdown posts
+- in `app.py`, the function `generate_keywords()` runs through every uploaded post
 - it then looks for keywords listed in the YAML (the top bit above the content)
-- it puts these into a big json (`keywordAssociations.json`)
-- `generate-links.py` then runs through every blog post, finds keyword matches and inserts a link
+- it puts these into a big json (`generated-posts/keywordAssociations.json`)
+- in `app.py`, the function `generate-links.py` then runs through every post, finds keyword matches and inserts a link
+- the user can then get these updated posts in the folder `/generated-posts`
