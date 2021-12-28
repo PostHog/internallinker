@@ -56,7 +56,7 @@ source venv/bin/activate
 - run `python generate-keywords.py`
 - run `python generate-links.py`
 
-## How it works
+## How it works
 
 - this is an app powered by Flask
 - the user uploads one or more markdown posts
