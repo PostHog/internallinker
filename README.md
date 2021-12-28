@@ -48,6 +48,8 @@ source venv/bin/activate
 
 Third, run flask with `flask run`
 
+Fourth, now visit `http://127.0.0.1:5000/` in your browser
+
 ## To use
 
 - in both `generate-keywords.py` and `generate-links.py`, set `path` as the local path to the folder that contains the posts you want to modify
