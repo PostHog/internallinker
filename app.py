@@ -32,7 +32,6 @@ def upload_file():
             return redirect(request.url)
         files = request.files.getlist("file")
         for file in files:
-            print(file.filename)
             if file.filename == '':
                 flash('No selected file')
             if file and allowed_file(file.filename):
@@ -56,7 +55,6 @@ def generate_keywords():
     for file in sorted(glob_filetypes(app.config['UPLOAD_FOLDER'], '*.md', '*.mdx')):
         with open(os.path.join(os.getcwd(), file), 'r') as f:
             fileName = Path(os.path.splitext(f.name)[0]).stem
-            print(fileName)
             frontMatter, blogText = frontmatter.parse(f.read())
             try:
                 frontMatter["topics"]
