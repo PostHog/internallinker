@@ -51,7 +51,15 @@ def generate_keywords():
         with open(os.path.join(os.getcwd(), file), 'r') as f:
             fileName = Path(os.path.splitext(f.name)[0]).stem
             frontMatter, blogText = frontmatter.parse(f.read())
-            keywords = frontMatter["keywords"]
+            try:
+                frontMatter["topics"]
+            except:
+                frontMatter["topics"] = []
+            try:
+                frontMatter["keywords"]
+            except:
+                frontMatter["keywords"] = []
+            keywords = frontMatter["topics"]+frontMatter["keywords"]
             for keyword in keywords:
                 keywordAssociations.update({linkId : {}})
                 linkDetails = {fileName : keyword}
@@ -62,7 +70,6 @@ def generate_keywords():
     return duplicate_check()
 
 def duplicate_check():
-    # todo: check if any links in 
     jsonFile = open(app.config['UPLOAD_FOLDER'] + '/keywordAssociations.json')
     keywordAssociations = json.load(jsonFile)
     keywordList = []
@@ -86,8 +93,13 @@ def generate_links(duplicateKeywords):
                     currentUrl = Path(os.path.splitext(f.name)[0]).stem
                     if url != currentUrl:
                         newText = "["+linkedKeyword+"]("+url+")"
+                        # check the keywords have a space before/after to prevent this problem: [keyword](link)s
+                        # todo: this is hideous hardcoding, refactor if it bothers you!
+                        blogText = blogText.replace(" "+linkedKeyword+" "," "+newText+" ")
+                        blogText = blogText.replace(" "+linkedKeyword+","," "+newText+",")
+                        blogText = blogText.replace(" "+linkedKeyword+";"," "+newText+";")
+                        blogText = blogText.replace(" "+linkedKeyword+'.'," "+newText+'.')
                         # check if new file has created links inside links, in which case - stop
-                        blogText = blogText.replace(linkedKeyword,newText)
                         if "[[" not in blogText:
                             markdownContent = "---\n"+yaml.dump(frontMatter) + "---\n" + blogText
                             # replace the file contents
