@@ -85,9 +85,7 @@ def generate_links(duplicateKeywords):
                     newText = "["+linkedKeyword+"]("+url+")"
                     # check if new file has created links inside links, in which case - stop
                     blogText = blogText.replace(linkedKeyword,newText)
-                    if "[[" in blogText:
-                        print("link created inside link, cancelling")
-                    else:
+                    if "[[" not in blogText:
                         markdownContent = "---\n"+yaml.dump(frontMatter) + "---\n" + blogText
                         # replace the file contents
                         f.truncate(0)
