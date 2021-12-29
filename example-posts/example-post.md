@@ -5,7 +5,7 @@ rootPage: /blog
 sidebar: Blog
 showTitle: true
 hideAnchor: true
-keywords: fundraise,fundraising,transparent
+keywords: ["fundraise","fundraising"]
 featuredImage: ../images/blog/series-b/series-b-baby.png
 author: ["joe-martin"]
 ---

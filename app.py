@@ -5,6 +5,7 @@ import re
 import glob
 import json
 import collections
+import frontmatter
 from pathlib import Path
 from flask import Flask, flash, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -49,8 +50,8 @@ def generate_keywords():
     for file in glob.glob(os.path.join(app.config['UPLOAD_FOLDER'], '*.md')):
         with open(os.path.join(os.getcwd(), file), 'r') as f:
             fileName = Path(os.path.splitext(f.name)[0]).stem
-            frontMatter, blogText = list(yaml.load_all(f, Loader=yaml.FullLoader))[:2]
-            keywords = frontMatter["keywords"].split(",")
+            frontMatter, blogText = frontmatter.parse(f.read())
+            keywords = frontMatter["keywords"]
             for keyword in keywords:
                 keywordAssociations.update({linkId : {}})
                 linkDetails = {fileName : keyword}
@@ -78,7 +79,7 @@ def generate_links(duplicateKeywords):
 
     for file in glob.glob(os.path.join(app.config['UPLOAD_FOLDER'], '*.md')):
         with open(os.path.join(os.getcwd(), file), 'r+') as f:
-            frontMatter, blogText = list(yaml.load_all(f, Loader=yaml.FullLoader))[:2]
+            frontMatter, blogText = frontmatter.parse(f.read())
             for key, value in keywordAssociations.items():
                 for url, linkedKeyword in value.items():
                     newText = "["+linkedKeyword+"]("+url+")"
