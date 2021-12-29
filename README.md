@@ -41,6 +41,7 @@ Third, run flask with `flask run`
 
 Fourth, now visit `http://127.0.0.1:5000/` in your browser
 
+Fifth, if you wanto match on just `keywords` from your frontmatter, leave the topics checkbox empty. If you want to match on `keywords` _and_ `topics` then check the checkbox.
 
 ## How it works
 
