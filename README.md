@@ -50,5 +50,5 @@ Fourth, now visit `http://127.0.0.1:5000/` in your browser
 - it then looks for keywords listed in the YAML (the top bit above the content)
 - it puts these into a big json (`generated-posts/keywordAssociations.json`)
 - in `app.py`, it then runs through every post, finds keyword matches and inserts a link
-- it won't insert a link inside another link, and it won't link pages to themselves
+- there is fancy filtering - it won't insert a link inside another link, it won't link pages to themselves, and it won't insert a link that isn't an entire word (ie  it won't do this: [dog](https://en.wikipedia.org/wiki/Dog)s)
 - the user can then get these updated posts in the folder `/generated-posts`
