@@ -15,5 +15,40 @@
     <h2>Instructions</h2>
     <p>See README.md</p>
 
+    <h2>Keywords</h2>
+    <table>
+        {% if linkOutput is defined %}
+        <tr><th>URL</th><th>Keyword</th></tr>
+            {%for key, value in linkOutput.items() %}
+                {%for key, value in value.items() %}
+                <tr>
+                    <td> {{ key }} </td>
+                    <td> {{ value }} </td>
+                </tr>
+                {% endfor %}
+            {% endfor %}
+        {% else %}
+        <tr>
+            No keywords found
+        </tr>
+        {% endif %}
+    </table>
+
+    <h2>Duplicate Keywords</h2>
+    <table>
+        {% if duplicateKeywords is defined %}
+            {%for duplicateKeyword in duplicateKeywords %}
+                
+                <tr>
+                    <td> {{ duplicateKeyword }} </td>
+                </tr>
+
+            {% endfor %}
+        {% else %}
+        <tr>
+            No duplicates found
+        </tr>
+        {% endif %}
+    </table>
 </body>
 </html>
