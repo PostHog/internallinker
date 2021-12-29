@@ -82,11 +82,16 @@ def generate_links(duplicateKeywords):
             frontMatter, blogText = frontmatter.parse(f.read())
             for key, value in keywordAssociations.items():
                 for url, linkedKeyword in value.items():
-                    newText = "["+linkedKeyword+"]("+url+")"
-                    blogText = blogText.replace(linkedKeyword,newText)
-                    markdownContent = "---\n"+yaml.dump(frontMatter) + "---\n" + blogText
-            # replace the file contents
-            f.truncate(0)
-            f.seek(0) #avoids weird characters at the start
-            f.write(markdownContent)
+                    # don't link the existing file to itself
+                    currentUrl = Path(os.path.splitext(f.name)[0]).stem
+                    if url != currentUrl:
+                        newText = "["+linkedKeyword+"]("+url+")"
+                        # check if new file has created links inside links, in which case - stop
+                        blogText = blogText.replace(linkedKeyword,newText)
+                        if "[[" not in blogText:
+                            markdownContent = "---\n"+yaml.dump(frontMatter) + "---\n" + blogText
+                            # replace the file contents
+                            f.truncate(0)
+                            f.seek(0) #avoids weird characters at the start
+                            f.write(markdownContent)
     return(keywordAssociations, duplicateKeywords)
