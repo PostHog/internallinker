@@ -37,7 +37,11 @@ def upload_file():
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        linkOutput,duplicateKeywords  = generate_keywords()
+        if request.form.get('topics'):
+            topicSupport=True
+        else:
+            topicSupport=False
+        linkOutput,duplicateKeywords  = generate_keywords(topicSupport)
         return render_template('index.html', linkOutput=linkOutput, duplicateKeywords=duplicateKeywords)
 
 def glob_filetypes(root_dir, *patterns):
@@ -45,11 +49,11 @@ def glob_filetypes(root_dir, *patterns):
             for pattern in patterns
             for path in glob.glob(os.path.join(root_dir, pattern))]
 
-def generate_keywords():
+def generate_keywords(topicSupport):
     keywords = ''
     blogText = ''
     keywordAssociations = {}
-
+    print(topicSupport)
     # Grab each md post in the blog folder and get the keywords from the YAML in the markdown file
     linkId = 1
     for file in sorted(glob_filetypes(app.config['UPLOAD_FOLDER'], '*.md', '*.mdx')):
@@ -64,7 +68,10 @@ def generate_keywords():
                 frontMatter["keywords"]
             except:
                 frontMatter["keywords"] = []
-            keywords = frontMatter["topics"]+frontMatter["keywords"]
+            if topicSupport:
+                keywords = frontMatter["topics"]+frontMatter["keywords"]
+            else:
+                keywords = frontMatter["keywords"]
             for keyword in keywords:
                 keywordAssociations.update({linkId : {}})
                 linkDetails = {fileName : keyword}
