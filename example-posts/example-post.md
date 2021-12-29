@@ -5,7 +5,7 @@ rootPage: /blog
 sidebar: Blog
 showTitle: true
 hideAnchor: true
-keywords: ["fundraise","fundraising"]
+keywords: ["fundraise", "fundraising"]
 featuredImage: ../images/blog/series-b/series-b-baby.png
 author: ["joe-martin"]
 ---
@@ -21,4 +21,3 @@ Here is more text. In fact, here is something about cancer and founder break up.
 Oh and we should fundraise soon.
 
 Ciao ciao.
-
