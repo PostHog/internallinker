@@ -1,2 +1,3 @@
 PyYAML==6.0
 virtualenv==20.10.0
+python-frontmatter==1.0.0
