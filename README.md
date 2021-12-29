@@ -12,7 +12,7 @@ Automatically generate internal links between your markdown files.
 
 # Notice
 
-This is in Alpha. It's not tested yet properly.
+This is in Alpha. Please manually check the changes to your markdown before uploading!
 
 # Philosophy
 
