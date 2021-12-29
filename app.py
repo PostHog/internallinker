@@ -11,7 +11,7 @@ from flask import Flask, flash, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = 'generated-posts'
-ALLOWED_EXTENSIONS = {'md'}
+ALLOWED_EXTENSIONS = {'md','mdx'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -32,6 +32,7 @@ def upload_file():
             return redirect(request.url)
         files = request.files.getlist("file")
         for file in files:
+            print(file.filename)
             if file.filename == '':
                 flash('No selected file')
             if file and allowed_file(file.filename):
@@ -40,6 +41,11 @@ def upload_file():
         linkOutput,duplicateKeywords  = generate_keywords()
         return render_template('index.html', linkOutput=linkOutput, duplicateKeywords=duplicateKeywords)
 
+def glob_filetypes(root_dir, *patterns):
+    return [path
+            for pattern in patterns
+            for path in glob.glob(os.path.join(root_dir, pattern))]
+
 def generate_keywords():
     keywords = ''
     blogText = ''
@@ -47,9 +53,10 @@ def generate_keywords():
 
     # Grab each md post in the blog folder and get the keywords from the YAML in the markdown file
     linkId = 1
-    for file in glob.glob(os.path.join(app.config['UPLOAD_FOLDER'], '*.md')):
+    for file in sorted(glob_filetypes(app.config['UPLOAD_FOLDER'], '*.md', '*.mdx')):
         with open(os.path.join(os.getcwd(), file), 'r') as f:
             fileName = Path(os.path.splitext(f.name)[0]).stem
+            print(fileName)
             frontMatter, blogText = frontmatter.parse(f.read())
             try:
                 frontMatter["topics"]
@@ -84,7 +91,7 @@ def generate_links(duplicateKeywords):
     jsonFile = open(app.config['UPLOAD_FOLDER'] + '/keywordAssociations.json')
     keywordAssociations = json.load(jsonFile)
 
-    for file in glob.glob(os.path.join(app.config['UPLOAD_FOLDER'], '*.md')):
+    for file in sorted(glob_filetypes(app.config['UPLOAD_FOLDER'], '*.md', '*.mdx')):
         with open(os.path.join(os.getcwd(), file), 'r+') as f:
             frontMatter, blogText = frontmatter.parse(f.read())
             for key, value in keywordAssociations.items():
