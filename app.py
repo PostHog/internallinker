@@ -24,6 +24,11 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def glob_filetypes(root_dir, *patterns):
+    return [path
+            for pattern in patterns
+            for path in glob.glob(os.path.join(root_dir, pattern))]
+
 @app.route('/', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
@@ -41,20 +46,17 @@ def upload_file():
             topicSupport=True
         else:
             topicSupport=False
-        linkOutput,duplicateKeywords  = generate_keywords(topicSupport)
-        return render_template('index.html', linkOutput=linkOutput, duplicateKeywords=duplicateKeywords)
 
-def glob_filetypes(root_dir, *patterns):
-    return [path
-            for pattern in patterns
-            for path in glob.glob(os.path.join(root_dir, pattern))]
+        generate_keywords(topicSupport)
+        duplicateKeywords = duplicate_check()
+        linkOutput = generate_links(duplicateKeywords)
+
+        return render_template('index.html', linkOutput=linkOutput, duplicateKeywords=duplicateKeywords)
 
 def generate_keywords(topicSupport):
     keywords = ''
     blogText = ''
     keywordAssociations = {}
-    print(topicSupport)
-    # Grab each md post in the blog folder and get the keywords from the YAML in the markdown file
     linkId = 1
     for file in sorted(glob_filetypes(app.config['UPLOAD_FOLDER'], '*.md', '*.mdx')):
         with open(os.path.join(os.getcwd(), file), 'r') as f:
@@ -79,7 +81,7 @@ def generate_keywords(topicSupport):
                 linkId += 1
     with open(app.config['UPLOAD_FOLDER'] + "/keywordAssociations.json", "w") as outfile:
         json.dump(keywordAssociations, outfile)
-    return duplicate_check()
+    return
 
 def duplicate_check():
     jsonFile = open(app.config['UPLOAD_FOLDER'] + '/keywordAssociations.json')
@@ -90,7 +92,7 @@ def duplicate_check():
                     keywordList.append(linkedKeyword)  
     duplicateKeywords = [item for item, count in collections.Counter(keywordList).items() if count > 1]
   
-    return generate_links(duplicateKeywords)
+    return duplicateKeywords
 
 def generate_links(duplicateKeywords):
     jsonFile = open(app.config['UPLOAD_FOLDER'] + '/keywordAssociations.json')
@@ -114,8 +116,7 @@ def generate_links(duplicateKeywords):
                         # check if new file has created links inside links, in which case - stop
                         if "[[" not in blogText:
                             markdownContent = "---\n"+yaml.dump(frontMatter) + "---\n" + blogText
-                            # replace the file contents
                             f.truncate(0)
                             f.seek(0) #avoids weird characters at the start
                             f.write(markdownContent)
-    return(keywordAssociations, duplicateKeywords)
+    return(keywordAssociations)
